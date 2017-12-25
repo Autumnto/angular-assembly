@@ -1,0 +1,119 @@
+//M
+var app = angular.module('Mywind',['ui.router'])
+    //V
+    app.controller('Myautumn',function($scope){
+    	 //angular Cookie读写   
+	    //用法 ：$scioe.addCookie("姓名",值,时间,"/")
+	    $scope.addCookie = function(name, value, days, path) {
+			var name = decodeURI(name);
+			var value = decodeURI(value);
+			var expires = new Date();
+			expires.setTime(expires.getTime() + days * 3600000 * 24);
+			path = path == "" ? "" : ";path=" + path;
+			var _expires = (typeof days) == "string" ? "" : ";expires=" + expires.toUTCString();
+			document.cookie = name + "=" + value + _expires + path;
+		}
+	    //angular Cookie读
+	    //用法：$scope.getCookieValue("姓名")
+	    $scope.getCookieValue = function(name) {
+			var name = decodeURI(name);
+			var allcookies = document.cookie;
+			name += "=";
+			var pos = allcookies.indexOf(name);
+			if(pos != -1) {
+				var start = pos + name.length;
+				var end = allcookies.indexOf(";", start);
+				if(end == -1) end = allcookies.length;
+				var value = allcookies.substring(start, end);
+				return(value);
+			} else {
+				return "";
+			}
+		};
+		//angular forEach 循环遍历数组
+	    var objs =[{a:1},{a:2}];
+		angular.forEach(objs, function(data,index,array){
+			//data等价于array[index]
+			console.log(data.a+'='+array[index].a);
+//			console.log(data.a);
+			//转化为小写
+			console.log(angular.lowercase("A"))
+			//转化为大写
+			console.log(angular.uppercase("b"))
+			
+		});
+		//$http
+		$scope.SWLogin = function() {
+			$http({
+				method: 'POST',
+				url: url + '',
+				params: {}
+			}).then(function successCallback(response) {
+				$scope.val = response.data
+			}, function errorCallback(response) {
+				$scope.message = message;
+				console.log("error：" + response + "");
+			});
+		}
+		//map 循环遍历
+		var role = {
+				"1":'文字a',
+				"6":'文字b',
+				"9":'文字c',
+				"7":'文字d',
+				"3":'文字e',
+				"5":'文字f'
+			}
+			//循环遍历改变值
+			$scope.val = $scope.val.map(item => {
+				var obj = {};
+				//取值x.realShow
+				obj.realShow = role[item.prizeid] ? role[item.prizeid] : '';
+				return Object.assign({}, item, obj);
+			})
+		//$http跨域
+		//服务端设置
+		//	访问权限	response.setHeader("Access-Control-Allow-Origin", "*");  
+		//	访问类型	response.setHeader("Access-Control-Allow-Methods","POST");
+		//	响应头	response.setHeader("Access-Control-Allow-Headers","x-requested-with,content-type");
+		$http.post(
+			'url',
+			{languageColumn:'name_eu'},
+			{'Content-Type':'application/x-www-form-urlencoded'}).success(function(data){
+			$scope.industries = data;
+		});
+		//angular 白名单全局通用
+		app.config([
+	        '$compileProvider',
+	        function ($compileProvider) {
+	            $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|itms-services|ftp|javascript|mailto|tel|file|sms):/);
+	            // Angular v1.2 之前使用 $compileProvider.urlSanitizationWhitelist(...)
+	        }
+	    ])
+		
+    })
+    //angular  三目运算符
+    console.log(angular.equals('1', '1') ? '1' : '2')
+    //angular 路由
+    .config(function($stateProvider,$urlRouterProvider){
+                $urlRouterProvider
+                        .otherwise('index1');
+                $stateProvider
+                        .state('index1',{
+                            url:'/index1',
+                            templateUrl:'ui-router/index1.html'
+                        })
+                        .state('index2',{
+                            url:'/index2',
+                            templateUrl:'ui-router/index2.html'
+                        })
+                        //子路由
+                        .state("index1.Page1", {
+				            url:"/Page1",
+				            templateUrl: "ui-router/zi-router/ui-page1.html"
+				           
+				        })
+                        
+            })
+    
+   
