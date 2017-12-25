@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html ng-app="Mywind" ng-controller="Myautumn">
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+	</head>
+	<script type="text/javascript" src="js/angular.min.js" ></script>
+	<script type="text/javascript" src="js/angular-ui-router.js" ></script>
+	<script type="text/javascript" src="js/angular-relst.js" ></script>
+	<style>
+		.nav{width: 1200px;margin: 0 auto;margin-top: 100px;}
+	</style>
+	<body>
+		<!--
+        	作者：2282390206@qq.com
+        	时间：2017-12-10
+        	描述：选项卡
+      -->
+		<div ng-init="now=0;" class="nav">
+			<h4>选项卡</h4>
+		    <div >
+		        <input type="button" value="Tab1" class="{{now==0?'active':''}}" ng-click="now=0">
+		        <input type="button" value="Tab2" class="{{now==1?'active':''}}" ng-click="now=1">
+		        <input type="button" value="Tab3" class="{{now==2?'active':''}}" ng-click="now=2">
+		      </div>
+		      <div ng-show="now==0">one Tab</div>
+		      <div ng-show="now==1">Two Tab</div>
+		      <div ng-show="now==2">Three Tab</div>
+   		 </div>
+   		 <!--
+            	作者：2282390206@qq.com
+            	时间：2017-12-10
+            	描述：路由嵌套
+            -->
+            <div class="nav">
+            	<h4>路由嵌套</h4>
+            	<a ui-sref="index1">ui-router-name1</a>
+				<a ui-sref="index2">ui-router-name2</a>
+				<div ui-view></div>
+            </div>
+            <!--
+            	作者：2282390206@qq.com
+            	时间：2017-12-19
+            	描述：依赖注入
+            -->
+            <div class="nav">
+            	<h4>依赖注入</h4>
+            	<input  type="text" ng-model="Myval" placeholder="val"/>
+            	<p ng-bind="Myval"></p>
+            </div>
+            <!--
+            	作者：2282390206@qq.com
+            	时间：2017-12-19
+            	描述：文本转化成列表数组
+            -->
+            <div class="nav">
+            	<h4>文本转化成列表数组</h4>
+            	<input ng-model="customers" ng-list/>
+            	<pre>{{customers}}</pre>
+            </div>
+            <!--
+            	作者：2282390206@qq.com
+            	时间：2017-12-19
+            	描述：表单验证 	require必填
+            -->
+             <div class="nav">
+            	<h4>表单验证</h4>
+            	<form ng-app="myApp"  name="myForm" novalidate>
+					<p>用户名:<br>
+						<input type="text" name="user" ng-model="user" ng-minlength="6" 
+							 ng-maxlength="16" ng-pattern="/^[a-zA-Z]{1}([a-zA-Z0-9]|[._]){5,11}$/"  required>
+						<span style="color:red" ng-show="myForm.user.$dirty && myForm.user.$invalid">
+							<span ng-show="myForm.user.$error.required">请填写用户名</span>
+							<span ng-show="myForm.user.$error.pattern ||
+								 myForm.user.$error.minlength">用户名以字母开头最小长度6 </span>
+						</span>
+					</p>
+					<p>邮箱:<br>
+						<input type="email" name="email" ng-model="email" required>
+						<span style="color:red" ng-show="myForm.email.$dirty && myForm.email.$invalid">
+							<span ng-show="myForm.email.$error.required">请填写邮箱</span>
+							<span ng-show="myForm.email.$error.email">请填写正确邮箱地址</span>
+						</span>
+					</p>
+					<p>手机号码:<br>
+						<input type="number" name="number" ng-model="number"
+							ng-minlength="11" maxlength="11" required>
+						<span style="color:red" ng-show="myForm.number.$dirty && myForm.number.$invalid">
+							<span ng-show="myForm.number.$error.number">请输入正确手机号码</span>
+							<span ng-show="myForm.number.$error.minlength || 
+								myForm.number.$error.maxlength">请输入11位手机号码</span>
+						</span>
+					</p>
+					<p>
+						<input type="submit"ng-disabled="myForm.user.$dirty && myForm.user.$invalid ||  
+							myForm.email.$dirty && myForm.email.$invalid || 
+							myForm.number.$dirty && myForm.number.$invalid">
+					</p>
+				</form>
+				
+            </div>
+	</body>
+</html>
